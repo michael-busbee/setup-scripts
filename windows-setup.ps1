@@ -16,6 +16,15 @@ Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://cho
 # Refresh environment variables
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
+
+# Install Battle.net
+Write-Host "Downloading and installing Battle.net..." -ForegroundColor Green
+$battlenetUrl = "https://www.battle.net/download/getInstallerForGame?os=win&version=LIVE&gameProgram=BATTLENET_APP"
+$battlenetInstaller = "$env:TEMP\Battle.net-Setup.exe"
+Invoke-WebRequest -Uri $battlenetUrl -OutFile $battlenetInstaller
+Start-Process -FilePath $battlenetInstaller -ArgumentList '--lang=enUS --installpath="C:\Program Files (x86)\Battle.net" --launch-product=bna' -Wait
+
+
 # Install Chocolatey packages
 Write-Host "Installing applications via Chocolatey..." -ForegroundColor Green
 $chocoApps = @(
